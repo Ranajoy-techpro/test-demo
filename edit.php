@@ -47,7 +47,7 @@ include('connection.php');
 	</head>
 	<body>
 		<form action="" align = "center" method="POST" enctype="multipart/form-data">
-			<h1>ADMIN EDIT PANEL</h1><br>
+			<h1>Product Modify</h1>
 			Product Name : <input type="text" name="pro_name" value = "<?php echo $row['product_name'];?>"><p><br> 
 			Product Category : <select name="pro_cat">
 								  <option <?php if($row['product_category']==""){echo "selected";}?>>None</option>
@@ -61,5 +61,6 @@ include('connection.php');
  					 	<table><td><img style="width: 50px;height: 40px;" class="center" src="./Image/<?php echo $row['product_image']; ?>"></td></table>
 		    Click to Upload : <input type="file" name="fileupload"><p><br> 
  			<input type="submit" name="mod" value="Modify">
+ 			<input type="submit" name="showdata" formaction="showdata.php" value="Home">
 	</body>
 </html>

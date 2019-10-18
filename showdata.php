@@ -10,15 +10,15 @@ if(isset($_POST['filter']))
     }
     else
     {
-   		 $src = "select * from product where product_name LIKE '%$search%' or id LIKE '%$search%'";
-    	 $res = $con->query($src);
+   		 $res = mysqli_query($con, "select * from product where product_name LIKE '%$search%' or id = '$search'");
+    	 //$res = $con->query($src);
     }
 }
     else
     {
-    	 $src = "select * from product";
-         $res = $con->query($src);
-    }
+    	 $res =  mysqli_query($con, "select * from product");
+         //$res = $con->query($src);
+    }    		
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,29 +41,34 @@ if(isset($_POST['filter']))
             <h1>Product Details</h1>
             Product Name : <input type="text" name="search"><br><br>
             <input type="submit" name="filter" value="Filter">
-            <input type="submit" name="home" formaction="product_index.php" value="Home"><br><br>
+            <input type="submit" name="home" formaction="product_index.php" value="Add"><br><br>
             <table width="100%">
                 <tr>
-                	<th>ID</th>
+                	<th>Sl No</th>
                     <th>NAME</th>
                     <th>CATEGORY</th>
                     <th>STATUS</th>
                     <th>IMAGE</th>
                     <th>CREATED DATE</th>
                     <th>UPDATED DATE</th>
-                    <th colspan="2">ACTION</th>
+                    <th colspan="3">ACTION</th>
                 </tr>
                 <?php
+               // $rows = array();
 				if(mysqli_num_rows($res) > 0)
 				{
-               		$result[] = mysqli_fetch_array($res);
-               		//while($row = mysqli_fetch_array($res)) 
-               		print_r($result);
-               		foreach ($result as $row)
+               		 while($result = mysqli_fetch_array($res))
+					//$result = mysqli_fetch_array($res)
+               		 	
+				    	{
+				    		$rows[] = $result;
+				    		$counter = 1;
+				    	}
+               		foreach ($rows as $row)
                		{
                 	?>
                 <tr>
-                	<td><?php echo $row['id'];?></td>
+                	<td><?php echo $counter++;?></td>
                     <td><?php echo $row['product_name'];?></td>
                     <td><?php echo $row['product_category'];?></td>
                     <td><?php echo $row['product_status'];?></td>
@@ -71,7 +76,7 @@ if(isset($_POST['filter']))
                     <td><?php echo $row['created_date'];?></td>
                     <td><?php echo $row['updated_date'];?></td>
                     <td>
-                    	<input type="button" onclick = "window.location.href = 'edit.php?mod-id=<?php echo $row['id'];?>'" value = "Modify">
+                    	<input type="button" onclick = "window.location.href = 'edit.php?mod-id=<?php echo $row['id'];?>'" value = "Edit">
                     </td>
                     <td>
                     	<input type = "button" onclick = "window.location.href = 'delete.php?del-id=<?php echo $row['id'];?>'" value = "Delete">
